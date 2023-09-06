@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Streaming</title>
+</head>
+<body>
+    <h1>Camera Streaming</h1>
+    <video id="videoStream" autoplay></video>
+
+    <script>
+        // HTML 요소 가져오기
+        const video = document.getElementById('videoStream');
+
+        // 비디오 스트림 URL 설정
+        const videoStreamUrl = '{% url "video_feed" %}'; // Django URL 설정에 따라 수정 필요
+
+        // 비디오 요소에 스트림 연결
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(videoStreamUrl);
+            hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoStreamUrl;
+        }
+
+        video.play();
+    </script>
+</body>
+</html>
